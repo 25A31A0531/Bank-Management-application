@@ -1,0 +1,418 @@
+BANK MANAGEMENT SYSTEM - TEST SCENARIOS
+========================================
+
+This document provides detailed test scenarios to verify all features
+of the Bank Management System.
+
+TEST SCENARIO 1: ACCOUNT CREATION
+----------------------------------
+Objective: Verify new account creation with initial deposit
+
+Steps:
+1. Run the application
+2. Select option 1 (Create New Account)
+3. Enter name: "Alice Johnson"
+4. Enter PIN: 1234
+5. Enter initial deposit: 5000
+
+Expected Result:
+- Account number 1001 generated
+- Success message displayed
+- Account created in accounts.dat file
+
+Validation:
+- Select option 5 to view all accounts
+- Verify "Alice Johnson" appears with balance $5000.00
+
+
+TEST SCENARIO 2: DEPOSIT OPERATION
+-----------------------------------
+Objective: Verify money deposit increases balance
+
+Prerequisites: Account 1001 exists with balance $5000
+
+Steps:
+1. Select option 2 (Deposit Money)
+2. Enter account number: 1001
+3. Enter PIN: 1234
+4. Enter deposit amount: 2500
+
+Expected Result:
+- Success message: "$2500.00 deposited successfully!"
+- New balance: $7500.00
+
+Validation:
+- Check balance (option 4)
+- Verify balance is $7500.00
+
+
+TEST SCENARIO 3: WITHDRAWAL OPERATION
+--------------------------------------
+Objective: Verify money withdrawal decreases balance
+
+Prerequisites: Account 1001 exists with balance $7500
+
+Steps:
+1. Select option 3 (Withdraw Money)
+2. Enter account number: 1001
+3. Enter PIN: 1234
+4. Enter withdrawal amount: 1500
+
+Expected Result:
+- Success message: "$1500.00 withdrawn successfully!"
+- New balance: $6000.00
+
+Validation:
+- Check balance (option 4)
+- Verify balance is $6000.00
+
+
+TEST SCENARIO 4: INSUFFICIENT BALANCE
+--------------------------------------
+Objective: Verify withdrawal fails when balance is insufficient
+
+Prerequisites: Account 1001 exists with balance $6000
+
+Steps:
+1. Select option 3 (Withdraw Money)
+2. Enter account number: 1001
+3. Enter PIN: 1234
+4. Enter withdrawal amount: 7000
+
+Expected Result:
+- Error message: "Insufficient balance! Withdrawal failed."
+- Balance remains $6000.00
+
+Validation:
+- Check balance to confirm no change
+
+
+TEST SCENARIO 5: INVALID PIN
+-----------------------------
+Objective: Verify transactions fail with incorrect PIN
+
+Prerequisites: Account 1001 exists with PIN 1234
+
+Steps:
+1. Select option 2 (Deposit Money)
+2. Enter account number: 1001
+3. Enter PIN: 9999 (incorrect)
+4. Enter deposit amount: 500
+
+Expected Result:
+- Error message: "Incorrect PIN! Transaction cancelled."
+- No balance change
+
+Validation:
+- Check balance to confirm no deposit was made
+
+
+TEST SCENARIO 6: BALANCE INQUIRY
+---------------------------------
+Objective: Verify balance check displays correct information
+
+Prerequisites: Account 1001 exists
+
+Steps:
+1. Select option 4 (Check Balance)
+2. Enter account number: 1001
+3. Enter PIN: 1234
+
+Expected Result:
+Display showing:
+- Account Number: 1001
+- Account Holder: Alice Johnson
+- Current Balance: $6000.00
+
+
+TEST SCENARIO 7: MULTIPLE ACCOUNTS
+-----------------------------------
+Objective: Create and manage multiple accounts
+
+Steps:
+1. Create Account 1: "Bob Smith", PIN 5678, Deposit $3000
+   - Expected account number: 1002
+2. Create Account 2: "Carol White", PIN 4321, Deposit $10000
+   - Expected account number: 1003
+3. Select option 5 (Display All Accounts)
+
+Expected Result:
+List showing:
+- 1001  Alice Johnson   $6000.00
+- 1002  Bob Smith       $3000.00
+- 1003  Carol White     $10000.00
+
+
+TEST SCENARIO 8: MODIFY ACCOUNT NAME
+-------------------------------------
+Objective: Update account holder name
+
+Prerequisites: Account 1002 exists (Bob Smith)
+
+Steps:
+1. Select option 6 (Modify Account)
+2. Enter account number: 1002
+3. Enter PIN: 5678
+4. Enter new name: "Robert Smith"
+5. Enter new PIN: 0000 (to keep current)
+
+Expected Result:
+- Success message: "Account modified successfully!"
+- Name updated to "Robert Smith"
+
+Validation:
+- View all accounts to verify name change
+
+
+TEST SCENARIO 9: CHANGE PIN
+----------------------------
+Objective: Update account PIN
+
+Prerequisites: Account 1003 exists with PIN 4321
+
+Steps:
+1. Select option 6 (Modify Account)
+2. Enter account number: 1003
+3. Enter PIN: 4321
+4. Enter new name: [Press Enter to keep current]
+5. Enter new PIN: 8888
+
+Expected Result:
+- Success message: "PIN updated successfully!"
+- Old PIN (4321) no longer works
+- New PIN (8888) works for transactions
+
+Validation:
+- Try deposit with old PIN (should fail)
+- Try deposit with new PIN (should succeed)
+
+
+TEST SCENARIO 10: DELETE ACCOUNT
+---------------------------------
+Objective: Remove an account permanently
+
+Prerequisites: Account 1002 exists
+
+Steps:
+1. Select option 7 (Delete Account)
+2. Enter account number: 1002
+3. Enter PIN: 5678
+4. Confirm deletion: Y
+
+Expected Result:
+- Success message: "Account deleted successfully!"
+- Account 1002 removed from system
+
+Validation:
+- View all accounts (1002 should not appear)
+- Try to access 1002 (should show "Account not found!")
+
+
+TEST SCENARIO 11: INVALID INPUTS
+---------------------------------
+Objective: Test input validation
+
+Test 11a - Negative Deposit:
+1. Try to deposit -500
+Expected: "Invalid amount! Deposit failed."
+
+Test 11b - Negative Withdrawal:
+1. Try to withdraw -200
+Expected: "Invalid amount! Withdrawal failed."
+
+Test 11c - Zero Amount:
+1. Try to deposit 0
+Expected: "Invalid amount! Deposit failed."
+
+Test 11d - Invalid PIN Length:
+1. Create account with PIN: 12 (only 2 digits)
+Expected: "PIN must be exactly 4 digits! Try again:"
+
+Test 11e - Non-existent Account:
+1. Try to deposit to account 9999
+Expected: "Account not found!"
+
+
+TEST SCENARIO 12: DATA PERSISTENCE
+-----------------------------------
+Objective: Verify data survives application restart
+
+Prerequisites: Multiple accounts exist
+
+Steps:
+1. Note current accounts and balances
+2. Select option 8 (Exit)
+3. Restart the application
+4. Select option 5 (Display All Accounts)
+
+Expected Result:
+- All accounts present with same data
+- All balances unchanged
+- accounts.dat file preserved
+
+
+TEST SCENARIO 13: CANCEL DELETION
+----------------------------------
+Objective: Verify deletion can be cancelled
+
+Prerequisites: Account 1003 exists
+
+Steps:
+1. Select option 7 (Delete Account)
+2. Enter account number: 1003
+3. Enter PIN: 8888
+4. Confirm deletion: N
+
+Expected Result:
+- Message: "Deletion cancelled."
+- Account 1003 still exists
+
+Validation:
+- View all accounts to confirm 1003 present
+
+
+TEST SCENARIO 14: CONCURRENT TRANSACTIONS
+------------------------------------------
+Objective: Test multiple operations on same account
+
+Prerequisites: Account 1001 with balance $6000
+
+Steps:
+1. Deposit $1000    -> Balance: $7000
+2. Withdraw $500    -> Balance: $6500
+3. Deposit $2500    -> Balance: $9000
+4. Withdraw $1000   -> Balance: $8000
+5. Check balance
+
+Expected Result:
+- Final balance: $8000.00
+- Each transaction updates file correctly
+
+
+TEST SCENARIO 15: BOUNDARY VALUES
+----------------------------------
+Objective: Test extreme values
+
+Test 15a - Large Deposit:
+1. Deposit $999999.99
+Expected: Success, balance updated
+
+Test 15b - Exact Balance Withdrawal:
+1. If balance is $5000, withdraw $5000
+Expected: Success, balance becomes $0.00
+
+Test 15c - Withdrawal from Zero Balance:
+1. Try to withdraw from $0.00 balance
+Expected: "Insufficient balance! Withdrawal failed."
+
+
+PERFORMANCE TESTING
+--------------------
+Test with:
+- 10 accounts - Should handle smoothly
+- 50 accounts - File operations should remain fast
+- 100 accounts - Display all accounts should be readable
+
+STRESS TESTING
+---------------
+1. Create 100+ accounts rapidly
+2. Perform 500+ transactions
+3. Check file integrity
+4. Verify no data corruption
+
+
+REGRESSION TEST CHECKLIST
+--------------------------
+After any code changes, verify:
+[ ] Account creation works
+[ ] Deposits increase balance correctly
+[ ] Withdrawals decrease balance correctly
+[ ] Insufficient balance check works
+[ ] PIN verification works
+[ ] Balance inquiry displays correctly
+[ ] Account modification works
+[ ] Account deletion works
+[ ] Data persists after restart
+[ ] Invalid inputs are rejected
+[ ] File operations don't corrupt data
+
+
+SECURITY TEST CHECKLIST
+------------------------
+[ ] Cannot access account without correct PIN
+[ ] Cannot deposit to non-existent account
+[ ] Cannot withdraw more than available balance
+[ ] Cannot use invalid PIN format
+[ ] File cannot be easily tampered with (binary format)
+[ ] Deletion requires confirmation
+
+
+SAMPLE TEST DATA
+----------------
+Use these accounts for testing:
+
+Account 1: "Test User One"
+- PIN: 1111
+- Initial Balance: $1000
+- Test: Basic operations
+
+Account 2: "Test User Two"  
+- PIN: 2222
+- Initial Balance: $5000
+- Test: Large transactions
+
+Account 3: "Test User Three"
+- PIN: 3333
+- Initial Balance: $100
+- Test: Insufficient balance scenarios
+
+Account 4: "Test User Four"
+- PIN: 4444
+- Initial Balance: $0
+- Test: Zero balance operations
+
+
+EXPECTED FILE CONTENTS
+-----------------------
+After running all tests, accounts.dat should contain:
+- Binary data (not readable in text editor)
+- File size = number_of_accounts * sizeof(Account)
+- Non-corrupted records
+
+
+DEBUGGING TIPS
+--------------
+If tests fail:
+1. Delete accounts.dat and start fresh
+2. Check compiler warnings
+3. Verify file permissions
+4. Use debugger to trace execution
+5. Add cout statements to track values
+6. Verify PIN is exactly 4 digits
+7. Check for buffer overflow in name field
+
+
+TEST REPORT TEMPLATE
+--------------------
+Test Date: __________
+Tester: __________
+
+Scenario | Status | Notes
+---------|--------|------
+TC-01    | PASS   |
+TC-02    | PASS   |
+TC-03    | PASS   |
+TC-04    | PASS   |
+TC-05    | PASS   |
+TC-06    | PASS   |
+TC-07    | PASS   |
+TC-08    | PASS   |
+TC-09    | PASS   |
+TC-10    | PASS   |
+TC-11    | PASS   |
+TC-12    | PASS   |
+TC-13    | PASS   |
+TC-14    | PASS   |
+TC-15    | PASS   |
+
+Overall Result: ______ (PASS/FAIL)
